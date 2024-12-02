@@ -1,11 +1,9 @@
-import * as THREE from 'three';
-import { MapControls } from 'three/examples/jsm/controls/MapControls';
-import {loadTexture} from './utils/utils.js'
-import texturePath from "./assets/noisey-thread-dense-multi-color.png"
-import DioramaCamera from "./dioramaCamera.js"
+import * as THREE from 'three'
+import { MapControls } from 'three/examples/jsm/controls/MapControls'
+import Camera from "./camera.js"
 
 let scene
-let dioramaCamera
+let camera
 let renderer
 let controls
 let box
@@ -20,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
 
     // scene
     scene = new THREE.Scene()
-    scene.background = new THREE.Color(0x222222)
+    scene.background = new THREE.Color(0xeeeeee)
 
     // Add grid for context. Rotate to lie in x-y plane
     const gridHelper = new THREE.GridHelper(20, 20)
@@ -35,31 +33,23 @@ document.addEventListener("DOMContentLoaded", async (event) => {
 
     // 2D Camera
     const frustumSize = 5
-    const texture = await loadTexture(texturePath)
-    dioramaCamera = new DioramaCamera(frustumSize, window.innerWidth/window.innerHeight, texture)
-    scene.add(dioramaCamera.camera)
+    camera = new Camera(frustumSize, window.innerWidth/window.innerHeight)
+    scene.add(camera.camera)
 
     // Light attached to camera
     const light = new THREE.PointLight(0xffffff, 2.5, 0, 0);
-    dioramaCamera.camera.add(light)
+    camera.camera.add(light)
 
     // Pan/Zoom control
-    controls = new MapControls(dioramaCamera.camera, renderer.domElement);
+    controls = new MapControls(camera.camera, renderer.domElement);
     controls.enableRotate = false;   // Disable rotation for 2D visualization
     controls.screenSpacePanning = true; // Enable panning in screen space (x, y)
     controls.zoomSpeed = 1.2
     controls.panSpeed = 1;
 
-    controls.addEventListener('change', () => dioramaCamera.updatePlaneGeometry(frustumSize, window.innerWidth/window.innerHeight))
-
     window.addEventListener('resize', () => {
-
-        dioramaCamera.windowResizeHelper(frustumSize, window.innerWidth/window.innerHeight)
-
-        dioramaCamera.updatePlaneGeometry(frustumSize, window.innerWidth/window.innerHeight)
-
+        camera.windowResizeHelper(frustumSize, window.innerWidth/window.innerHeight)
         renderer.setSize(window.innerWidth, window.innerHeight);
-
     })
 
     animate();
@@ -69,6 +59,6 @@ document.addEventListener("DOMContentLoaded", async (event) => {
 function animate (){
     requestAnimationFrame(animate);
     controls.update();
-    renderer.render(scene, dioramaCamera.camera);
+    renderer.render(scene, camera.camera);
 }
 
