@@ -9,9 +9,8 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "bootstrap": "^5.3.3",
-    "three": "^0.175.0",
-    "vite": "^6.2.4",
+    "three": "^0.161.0",
+    "vite": "^6.2.5",
     "vite-plugin-glsl": "^1.3.0"
   }
 }
