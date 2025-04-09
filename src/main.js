@@ -1,20 +1,22 @@
 import * as THREE from 'three'
 import { MapControls } from 'three/examples/jsm/controls/MapControls'
 import Camera from "./camera.js"
+import './styles/app.scss'
 
 let scene
 let camera
 let renderer
 let controls
 let box
+
 document.addEventListener("DOMContentLoaded", async (event) => {
+    const container = document.getElementById('three-container')
 
     // renderer
-    renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(container.clientWidth, container.clientHeight)
     renderer.setPixelRatio(window.devicePixelRatio)
-    renderer.setSize(window.innerWidth, window.innerHeight)
-    document.body.appendChild(renderer.domElement)
+    container.appendChild(renderer.domElement)
 
     // scene
     scene = new THREE.Scene()
@@ -33,7 +35,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
 
     // 2D Camera
     const frustumSize = 5
-    camera = new Camera(frustumSize, window.innerWidth/window.innerHeight)
+    camera = new Camera(frustumSize, container.clientWidth/container.clientHeight)
     scene.add(camera.camera)
 
     // Light attached to camera
@@ -48,12 +50,13 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     controls.panSpeed = 1;
 
     window.addEventListener('resize', () => {
-        camera.windowResizeHelper(frustumSize, window.innerWidth/window.innerHeight)
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+        camera.windowResizeHelper(frustumSize, width/height)
+        renderer.setSize(width, height);
     })
 
     animate();
-
 })
 
 function animate (){
