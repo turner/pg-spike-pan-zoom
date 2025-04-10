@@ -44,6 +44,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
 
     // Pan/Zoom control
     controls = new MapControls(camera.camera, renderer.domElement);
+    controls.zoomToCursor = true; // Enable zooming to cursor position
     controls.enableRotate = false;   // Disable rotation for 2D visualization
     controls.screenSpacePanning = true; // Enable panning in screen space (x, y)
     controls.zoomSpeed = 1.2
