@@ -4,14 +4,29 @@ html, body {
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
 }
 
-// Three.js container
-.three-container {
+// Fullscreen layout styles
+.fullscreen-layout {
   position: fixed;
   top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+// Component container styles
+.component-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+// Three.js specific container styles
+.three-container {
   width: 100%;
   height: 100%;
 } 
