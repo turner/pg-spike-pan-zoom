@@ -5,16 +5,15 @@ import MapControlsFactory from './mapControlsFactory.js'
 import RendererFactory from './rendererFactory.js'
 
 class SceneManager {
-    constructor(container) {
+    constructor(container, backgroundColor, frustumSize) {
         this.container = container
         this.scene = new THREE.Scene()
-        this.scene.background = new THREE.Color(0xeeeeee)
+        this.scene.background = backgroundColor
         
         // Initialize renderer
         this.renderer = RendererFactory.create(container)
         
         // Initialize camera system
-        const frustumSize = 5
         const cameraManager = new CameraManager(frustumSize, container.clientWidth/container.clientHeight)
         const mapControl = MapControlsFactory.create(cameraManager.camera, container)
         this.cameraRig = new CameraRig(cameraManager, mapControl)

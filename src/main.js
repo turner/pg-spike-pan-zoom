@@ -5,15 +5,15 @@ import * as THREE from 'three'
 let sceneManager
 
 document.addEventListener("DOMContentLoaded", async (event) => {
+
+    const backgroundColor = new THREE.Color(0xeeeeee)
+    const frustumSize = 5
+    sceneManager = new SceneManager(document.getElementById('three-container'), backgroundColor, frustumSize)
     
-    sceneManager = new SceneManager(document.getElementById('three-container'))
+    // const gridHelper = new THREE.GridHelper(20, 20)
+    // gridHelper.rotation.x = Math.PI / 2
+    // sceneManager.addToScene(gridHelper)
     
-    // Add grid helper
-    const gridHelper = new THREE.GridHelper(20, 20)
-    gridHelper.rotation.x = Math.PI / 2
-    sceneManager.addToScene(gridHelper)
-    
-    // Add test box
     const geometry = new THREE.BoxGeometry(1, 1, 1)
     const material = new THREE.MeshStandardMaterial({ color: 0xff0000 })
     const box = new THREE.Mesh(geometry, material)
