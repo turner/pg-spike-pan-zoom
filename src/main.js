@@ -19,5 +19,8 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     const box = new THREE.Mesh(geometry, material)
     sceneManager.addToScene(box)
     
+    // Update the view to fit the scene
+    sceneManager.updateViewToFitScene()
+    
     sceneManager.startAnimation()
 })
