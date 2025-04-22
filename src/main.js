@@ -23,21 +23,22 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     scene = new THREE.Scene()
     scene.background = new THREE.Color(0xeeeeee)
 
-    // Add grid for context. Rotate to lie in x-y plane
+    // 2D Camera
+    const frustumSize = 5
+    camera = new Camera(frustumSize, container.clientWidth/container.clientHeight)
+    scene.add(camera.camera)
+
+    // Add grid for context. Rotate to lie in x-y plane and make it a child of the camera
     const gridHelper = new THREE.GridHelper(20, 20)
     gridHelper.rotation.x = Math.PI / 2
-    scene.add(gridHelper)
+    gridHelper.position.z = -5 // Position it behind the camera
+    camera.camera.add(gridHelper)
 
     // Box
     const geometry = new THREE.BoxGeometry(1, 1, 1)
     const material = new THREE.MeshStandardMaterial({ color: 0xff0000 })
     box = new THREE.Mesh(geometry, material)
     scene.add(box)
-
-    // 2D Camera
-    const frustumSize = 5
-    camera = new Camera(frustumSize, container.clientWidth/container.clientHeight)
-    scene.add(camera.camera)
 
     // Light attached to camera
     const light = new THREE.PointLight(0xffffff, 2.5, 0, 0);
