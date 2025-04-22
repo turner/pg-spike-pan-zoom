@@ -37,10 +37,10 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     const cameraManager = new CameraManager(frustumSize, container.clientWidth/container.clientHeight)
     
     // Map Controls
-    const controls = MapControlsFactory.create(cameraManager.camera, container)
+    const mapControl = MapControlsFactory.create(cameraManager.camera, container)
 
     // Camera Rig
-    cameraRig = new CameraRig(cameraManager, controls)
+    cameraRig = new CameraRig(cameraManager, mapControl)
     scene.add(cameraRig.camera)
 
     window.addEventListener('resize', () => {
