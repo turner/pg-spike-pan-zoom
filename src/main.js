@@ -13,9 +13,10 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     const container = document.getElementById('three-container')
 
     // renderer
-    renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(container.clientWidth, container.clientHeight)
+    renderer = new THREE.WebGLRenderer({ antialias: true })
     renderer.setPixelRatio(window.devicePixelRatio)
+    renderer.setSize(container.clientWidth, container.clientHeight)
+    renderer.setAnimationLoop( animate )
     container.appendChild(renderer.domElement)
 
     // scene
@@ -57,12 +58,9 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         renderer.setSize(width, height);
     })
 
-    animate();
 })
 
 function animate (){
-    requestAnimationFrame(animate);
     controls.update();
     renderer.render(scene, camera.camera);
 }
-
