@@ -1,25 +1,23 @@
 import * as THREE from 'three'
-import { MapControls } from 'three/examples/jsm/controls/MapControls'
-import Camera from "./camera.js"
+import CameraManager from './cameraManager.js'
+import CameraRig from "./cameraRig.js"
+import MapControlsFactory from './mapControlsFactory.js'
+import RendererFactory from './rendererFactory.js'
 import './styles/app.scss'
 
 let scene
-let camera
+let cameraRig
 let renderer
-let controls
 let box
 
 document.addEventListener("DOMContentLoaded", async (event) => {
     const container = document.getElementById('three-container')
 
-    // renderer
-    renderer = new THREE.WebGLRenderer({ antialias: true })
-    renderer.setPixelRatio(window.devicePixelRatio)
-    renderer.setSize(container.clientWidth, container.clientHeight)
-    renderer.setAnimationLoop( animate )
-    container.appendChild(renderer.domElement)
+    // Renderer
+    renderer = RendererFactory.create(container)
+    renderer.setAnimationLoop(animate)
 
-    // scene
+    // Scene
     scene = new THREE.Scene()
     scene.background = new THREE.Color(0xeeeeee)
 
@@ -34,33 +32,26 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     box = new THREE.Mesh(geometry, material)
     scene.add(box)
 
-    // 2D Camera
+    // Camera Manager
     const frustumSize = 5
-    camera = new Camera(frustumSize, container.clientWidth/container.clientHeight)
-    scene.add(camera.camera)
+    const cameraManager = new CameraManager(frustumSize, container.clientWidth/container.clientHeight)
+    
+    // Map Controls
+    const controls = MapControlsFactory.create(cameraManager.camera, container)
 
-    // Light attached to camera
-    const light = new THREE.PointLight(0xffffff, 2.5, 0, 0);
-    camera.camera.add(light)
-
-    // Pan/Zoom control
-    controls = new MapControls(camera.camera, renderer.domElement);
-    controls.zoomToCursor = true; // Enable zooming to cursor position
-    controls.enableRotate = false;   // Disable rotation for 2D visualization
-    controls.screenSpacePanning = true; // Enable panning in screen space (x, y)
-    controls.zoomSpeed = 1.2
-    controls.panSpeed = 1;
+    // Camera Rig
+    cameraRig = new CameraRig(cameraManager, controls)
+    scene.add(cameraRig.camera)
 
     window.addEventListener('resize', () => {
-        const width = container.clientWidth;
-        const height = container.clientHeight;
-        camera.windowResizeHelper(frustumSize, width/height)
-        renderer.setSize(width, height);
+        const width = container.clientWidth
+        const height = container.clientHeight
+        cameraRig.handleResize(width, height)
+        renderer.setSize(width, height)
     })
-
 })
 
 function animate (){
-    controls.update();
-    renderer.render(scene, camera.camera);
+    cameraRig.update()
+    renderer.render(scene, cameraRig.camera)
 }

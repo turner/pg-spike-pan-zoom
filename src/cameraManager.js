@@ -1,6 +1,6 @@
 import * as THREE from "three"
 
-class Camera {
+class CameraManager {
     constructor(frustumSize, aspectRatio) {
 
         const frustumHalfSize = frustumSize/2
@@ -32,4 +32,4 @@ class Camera {
     }
 }
 
-export default Camera
+export default CameraManager
